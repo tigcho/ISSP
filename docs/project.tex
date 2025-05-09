@@ -2,10 +2,10 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
-\usepackage[colorlinks=true, 
-            linkcolor=blue, 
-            urlcolor=blue, 
-            citecolor=blue, 
+\usepackage[colorlinks=true,
+            linkcolor=blue,
+            urlcolor=blue,
+            citecolor=blue,
             anchorcolor=blue]{hyperref}
 \usepackage[margin=2.5cm]{geometry}
 \usepackage{enumitem}
@@ -18,124 +18,97 @@
 {\color{sectioncolor}\normalfont\Large\bfseries}
 {\thesection}{1em}{}
 
-\title{\textbf{AWS AD Lab Project Plan}}
-\author{Selin Kabak}
+\title{\textbf{Vulnerable Active Directory Lab Infrastructure}}
 
 \begin{document}
 \maketitle
 
 \section{Project Overview}
 \subsection{Description}
-This hands-on cybersecurity lab project focuses on implementing and securing Windows Server and Active Directory infrastructure in AWS using Infrastructure-as-Code principles. The project utilizes Terraform for infrastructure provisioning, Vagrant for development environments, and Ansible for configuration automation, providing a practical learning environment for cloud security concepts.
+This infrastructure project implements an Active Directory environment designed for security testing and analysis. The environment will be deliberately configured with various security misconfigurations to allow for testing and learning about AD vulnerabilities. The project uses Infrastructure-as-Code principles, combining Terraform and Ansible for automation, and incorporates Wazuh for security monitoring and threat detection.
 
 \subsection{Objectives}
-This hands-on lab project will teach me how to set up and manage Active Directory in AWS cloud. I will learn how to build a complete test environment that mirrors real-world setups, but in a way that's safe for learning and experimenting.
-
-I will start by learning how to use Terraform to create the basic AWS building blocks - like virtual networks (VPCs). Using Vagrant, I'll create a local test environment on my computer where I can practice configurations safely before trying them in AWS.
-
-For the Windows Server part, I'll learn how to automatically set up and configure servers using Ansible. This includes installing Active Directory, creating user accounts, setting up security policies, and making sure everything is properly secured. I'll focus on understanding how Active Directory works in the cloud, including how to set up domain controllers and manage users and groups.
-
-The project will teach me about common security problems in Active Directory and how to fix them. This includes setting up proper backups, monitoring for security issues, and knowing what to do if something goes wrong. I'll also learn how to properly test my setups and keep track of changes using version control.
-
-\section{Steps to Take}
-
-\subsection{Learning the Tools}
-Before diving into the actual implementation, I need to understand the basic tools:
-
-\begin{enumerate}[label=\arabic*.]
-    \item Learn AWS fundamentals
-        \begin{itemize}
-            \item Get familiar with VPC, EC2, Security Groups through the AWS Console
-        \end{itemize}
-    
-    \item Get comfortable with Terraform
-        \begin{itemize}
-            \item Practice creating and destroying simple resources
-            \item Learn about state files and variable management
-        \end{itemize}
-    
-    \item Set up Vagrant environment
-        \begin{itemize}
-            \item Create a simple Windows Server VM
-            \item Learn basic Vagrant commands and configuration
-        \end{itemize}
-    
-    \item Learn Ansible basics
-        \begin{itemize}
-            \item Practice with simple playbooks
-            \item Learn Windows-specific Ansible modules
-        \end{itemize}
-\end{enumerate}
-
-\subsection{Implementation Tracks}
-
-\textbf{Track 1: Local Testing Environment}
 \begin{itemize}
-    \item Create Vagrant file for Windows Server VM
-    \item Set up local Active Directory in VM
-    \item Practice AD management tasks locally
-    \item Test Ansible playbooks against local VM
+    \item Establish a controlled vulnerable Active Directory infrastructure using Infrastructure-as-Code
+    \item Develop expertise in AD security testing and common attack vectors
+    \item Implement Wazuh XDR for security monitoring and incident response
+    \item Create reproducible deployment processes using Terraform and Ansible
+    \item Learn to identify and exploit common AD misconfigurations
+    \item Understand defensive mechanisms and logging capabilities
 \end{itemize}
 
-\textbf{Track 2: AWS Infrastructure
-}
+\section{Project Phases}
+
+\subsection{Phase 1: Local Infrastructure Development}
+\textbf{Infrastructure Implementation}
 \begin{itemize}
-    \item Write basic Terraform config for VPC
-    \item Add security groups and subnets
-    \item Create Windows Server EC2 instance
-    \item Test connectivity and access
+    \item Develop Terraform configurations for Hyper-V
+    \item Create virtual network architecture
+    \item Deploy Windows Server domain controllers with specific misconfigurations
+    \item Implement automated OS installation process using Ansible
+    \item Configure Wazuh server for security monitoring
 \end{itemize}
 
-\textbf{Track 3: Automation Development}
+\textbf{Ansible Implementation}
 \begin{itemize}
-    \item Write Ansible playbooks for Windows setup
-    \item Create AD installation and configuration scripts
-    \item Develop user and group management automation
-    \item Test automation scripts locally first
+    \item Create Ansible playbooks for Windows Server configuration
+    \item Develop roles for AD deployment and misconfiguration
+    \item Implement automated user and group creation
 \end{itemize}
 
-\subsection{Integration Points}
-Key moments where different tracks come together:
-
+\subsection{Phase 2: Active Directory Vulnerable Configuration}
+\textbf{Security Misconfigurations}
 \begin{itemize}
-    \item When local AD setup works, move configurations to AWS
-    \item Test Ansible playbooks on AWS instances
-    \item Combine Terraform and Ansible for full automation
+    \item Configure weak password policies
+    \item Implement vulnerable group policies
+    \item Set up misconfigured security groups
+    \item Enable Kerberos delegation vulnerabilities
+    \item Configure weak service account permissions
 \end{itemize}
 
-\subsection{Learning Notes}
-Things to document as I go:
-
+\subsection{Phase 3: Security Testing Environment}
+\textbf{Attack Scenarios}
 \begin{itemize}
-    \item Tool installation steps and issues faced
-    \item Common AWS and AD configuration problems
-    \item Successful configurations and why they work
+    \item Kerberoasting attacks
+    \item NTLM relay attacks
+    \item Password spraying and brute force attempts
+    \item privilege escalation techniques
+    \item Golden/Silver ticket attacks
+    \item DCSync attacks
+\end{itemize}
+
+\subsection{Phase 4: AWS Migration}
+\textbf{Cloud Deployment}
+\begin{itemize}
+    \item Deploy infrastructure to AWS using Terraform
+    \item Migrate AD configuration using Ansible playbooks
+    \item Set up AWS Directory Service integration
+    \item Configure cloud security groups and network ACLs
 \end{itemize}
 
 \section{Resources \& References}
 \begin{itemize}
-    \item[TOOLS]
-    \item \href{https://xapax.github.io/security/}{Attacking Active Directory}
-    \item \href{https://github.com/mdecrevoisier/SIGMA-detection-rules}{SIGMA detection rules for SIEM}
-    \item \href{https://github.com/inspec/inspec}{InSpec: Infrastructure Testing Framework}
-    \item \href{https://github.com/ansible-collections/vmware.vmware}{Official VMware Automation Collection for Ansible}
-    \item \href{https://spacelift.io/blog/ansible-best-practices}{Ansible Best Practices and Standards}
-    \item \href{https://www.frostbyte.us/configure-an-ansible-testing-system-on-windows-part-1/}{Setting Up Ansible Test Environment on Windows}
-    \item \href{https://github.com/guillermo-musumeci/terraform-aws-ad-mfa-radius-linotp}{AWS AD with MFA using Terraform}
-    
-    \item[EXAMPLES]
-    \item \href{https://github.com/gr33nm0nk2802/DelegationLab?tab=readme-ov-file}{AD Delegation Lab}
-    \item \href{https://github.com/alebov/AD-lab}{AD Lab}
-    \item \href{https://github.com/jckhmr/adlab?tab=readme-ov-file}{AD Lab with Attack Scenarios}
-    \item \href{https://github.com/C4l1b4n/Active-Directory-Ansible-Lab}{Automated AD Lab Deployment using Ansible}
-    \item \href{https://github.com/blink-zero/ansible-ad-lab}{Multi-Platform AD Environment with Ansible}
-    \item \href{https://github.com/ldelouw/active-directory-ansible-playbook}{AD Setup with Groups and Users}
-    \item \href{https://github.com/Cinderblook/vSphere-WinServ-Deployment}{Automated Windows Server Deployment in vSphere}
-    
-    \item [DOCS]
-    \item \href{https://www.terraform.io/docs/providers/aws/}{Terraform Documentation}
-    \item \href{https://developer.hashicorp.com/vagrant/docs}{Vagrant Documentation}
-    \item \href{https://docs.ansible.com/ansible/latest/os_guide/windows_usage.html}{Ansible Windows Integration}
+    \item[INFRASTRUCTURE]
+    \item \href{https://learn.microsoft.com/en-us/virtualization/hyper-v-on-windows/}{Hyper-V Documentation}
+    \item \href{https://www.terraform.io/docs/providers/hyperv/}{Terraform Hyper-V Provider}
+    \item \href{https://docs.ansible.com/ansible/latest/os_guide/windows_usage.html}{Ansible Windows Guide}
+    \item \href{https://documentation.wazuh.com/current/index.html}{Wazuh Documentation}
 
+    \item[ACTIVE DIRECTORY SECURITY]
+    \item \href{https://adsecurity.org/}{Active Directory Security Blog}
+    \item \href{https://github.com/infosecn1nja/AD-Attack-Defense}{AD Attack and Defense Guide}
+    \item \href{https://github.com/S1ckB0y1337/Active-Directory-Exploitation-Cheat-Sheet}{AD Exploitation Cheat Sheet}
+
+    \item[ATTACK TOOLS]
+    \item \href{https://github.com/PowerShellMafia/PowerSploit}{PowerSploit}
+    \item \href{https://github.com/BloodHoundAD/BloodHound}{BloodHound}
+    \item \href{https://github.com/SecureAuthCorp/impacket}{Impacket}
+    \item \href{https://github.com/gentilkiwi/mimikatz}{Mimikatz}
+
+    \item[SECURITY MONITORING]
+    \item \href{https://documentation.wazuh.com/current/learning-wazuh/detect-windows-evading.html}{Wazuh Windows Security Monitoring}
+    \item \href{https://documentation.wazuh.com/current/user-manual/capabilities/active-response/}{Wazuh Active Response}
+    \item \href{https://documentation.wazuh.com/current/user-manual/ruleset/ruleset-xml-syntax.html}{Wazuh Rules Configuration}
 \end{itemize}
+
 \end{document}

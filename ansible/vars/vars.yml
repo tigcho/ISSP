@@ -1,0 +1,7 @@
+# windows domain controller info
+dc_info:
+  domain_name: skk.local
+  admin_pw: UseSaferPasswords123!
+  admin_user: administrator
+  safemode_pw: UseSaferPasswords123!
+  state: domain_controller
