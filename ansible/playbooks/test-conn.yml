@@ -1,0 +1,18 @@
+---
+- name: test connectivity
+  hosts: windows
+    - name: get hostname
+      win_command: hostname
+      register: hostname_result
+
+    - name: display hostname
+      debug:
+        msg: "Hostname is {{ hostname_result.stdout }}"
+
+    - name: get system info
+      win_shell: systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
+      register: sysinfo
+
+    -name: display system info
+      debug:
+        msg: "{{ sysinfo.stdout_lines }}"

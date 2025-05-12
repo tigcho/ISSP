@@ -1,0 +1,22 @@
+---
+- name: setup domain controller
+  hosts: dc
+  gather_facts: yes
+  tasks:
+    - name: install adds
+      win_feature:
+        name: AD-Domain-Services
+        state: present
+        include_management_tools: yes
+      register: adds_install
+
+    - name: configure ad
+      win_domain:
+        dns_domain_name: issp.local
+        safe_mode_password: 'MyAdminPassword123!'
+      register: ad_setup
+      when: adds_install.changed  
+
+    - name: reboot after installation
+      win_reboot:
+      when: ad_setup.changed

@@ -25,16 +25,14 @@
 
 \section{Project Overview}
 \subsection{Description}
-This infrastructure project implements an Active Directory environment designed for security testing and analysis. The environment will be deliberately configured with various security misconfigurations to allow for testing and learning about AD vulnerabilities. The project uses Infrastructure-as-Code principles, combining Terraform and Ansible for automation, and incorporates Wazuh for security monitoring and threat detection.
+This infrastructure project implements an Active Directory environment designed for security testing and analysis. The environment will be deliberately configured with various security misconfigurations to simulate real-world vulnerabilities. The project will first be implemented and tested locally using VirtualBox, and later migrated to AWS for cloud deployment.
 
 \subsection{Objectives}
 \begin{itemize}
     \item Establish a controlled vulnerable Active Directory infrastructure using Infrastructure-as-Code
-    \item Develop expertise in AD security testing and common attack vectors
     \item Implement Wazuh XDR for security monitoring and incident response
     \item Create reproducible deployment processes using Terraform and Ansible
     \item Learn to identify and exploit common AD misconfigurations
-    \item Understand defensive mechanisms and logging capabilities
 \end{itemize}
 
 \section{Project Phases}
@@ -42,7 +40,7 @@ This infrastructure project implements an Active Directory environment designed 
 \subsection{Phase 1: Local Infrastructure Development}
 \textbf{Infrastructure Implementation}
 \begin{itemize}
-    \item Develop Terraform configurations for Hyper-V
+    \item Develop Terraform configurations for VirtualBox
     \item Create virtual network architecture
     \item Deploy Windows Server domain controllers with specific misconfigurations
     \item Implement automated OS installation process using Ansible
@@ -89,8 +87,8 @@ This infrastructure project implements an Active Directory environment designed 
 \section{Resources \& References}
 \begin{itemize}
     \item[INFRASTRUCTURE]
-    \item \href{https://learn.microsoft.com/en-us/virtualization/hyper-v-on-windows/}{Hyper-V Documentation}
-    \item \href{https://www.terraform.io/docs/providers/hyperv/}{Terraform Hyper-V Provider}
+    \item \href{https://www.virtualbox.org/manual/UserManual.html}{VirtualBox Documentation}
+    \item \href{https://www.terraform.io/docs/providers/vagrant/}{Terraform VirtualBox Provider}
     \item \href{https://docs.ansible.com/ansible/latest/os_guide/windows_usage.html}{Ansible Windows Guide}
     \item \href{https://documentation.wazuh.com/current/index.html}{Wazuh Documentation}
 

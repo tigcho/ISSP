@@ -1,9 +1,0 @@
----
-- name: Configure domain controllers
-  hosts: dc
-  gather_facts: no
-  tasks:
-  - name: Create test file
-      win_file:
-        path: C:\hello.txt
-        state: touch
