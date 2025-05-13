@@ -1,6 +1,0 @@
-all:
-  children:
-    windows:
-      hosts:
-        windows-srv:
-          ansible
