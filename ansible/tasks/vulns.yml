@@ -1,0 +1,83 @@
+---
+- name: create ad vulnerabilities
+  hosts: dc
+  gather_facts: yes
+  vars_files: 
+    - ../vars/main.yml
+
+  tasks:
+    - name: weaken domain password policy 
+      win_domain_password_policy:
+        lockout_duration: 0
+        lockout_observation_window: 1
+        complexity_enabled: no
+        min_password_length: 4
+        password_history_size: 1
+
+    - name: create groups (high privilege)
+      win_domain_group:
+        name: "{{ item }}"
+        scope: global
+      loop: "{{ high_groups }}"
+
+    - name: create groups (mid privilege)
+      win_domain_group:
+        name: "{{ item }}"
+        scope: global
+      loop: "{{ mid_groups }}"
+
+    - name: create groups (normal privilege)
+      win_domain_group:
+        name: "{{ item }}"
+        scope: global
+      loop: "{{ normal_groups }}"
+
+    - name: create service account
+      win_domain_user:
+        name: "{{ item.key }}"
+        spn: "{{ item.key }}/{{ item.value.spn }}.{{ domain_name }}"
+        password: "{{ item.value.password | default(lookup('password', '/dev/null chars=ascii_letters,digits length=12')) }}"
+        password_never_expires: yes
+      loop: "{{ service_accounts | dict2items }}"
+
+    - name: configure users
+      win_domain_user:
+        name: "{{ item }}"
+        password: "ChangeMe123!"
+        state: present
+        loop:
+          - asrep_user1
+          - asrep_user2
+
+    - name: disable kerberos preauth for as-rep users
+      win_shell: |
+        Set-ADUser -Identity "{{ item }}" -DoesNotRequirePreAuth $true
+      loop:
+        - asrep_user1
+        - asrep_user2
+
+    - name: Add users to DnsAdmins group
+      win_group_membership:
+        name: DnsAdmins
+        members:
+          - "{{ mid_groups[0] }}"
+
+    - name: disable smb signing
+      win_shell: |
+        Set-SmbClientConfiguration -RequireSecuritySignature 0 -EnableSecuritySignature 0 -Confirm:$false -Force
+
+    - name: configure dsync rights for specific user
+      win_shell: |
+        $user = Get-ADUser -Identity "{{ mid_groups[0] }}"
+        $acl = Get-ACL "AD:DC=issp,DC=local"
+        $sid = [System.Security.Principal.SecurityIdentifier] $user.SID
+        
+        $objectGuid = New-Object Guid "1131f6aa-9c07-11d1-f79f-00c04fc2dcd2"
+        $identity = [System.Security.Principal.IdentityReference] $sid
+        $adRights = [System.DirectoryServices.ActiveDirectoryRights] "ExtendedRight"
+        $type = [System.Security.AccessControl.AccessControlType] "Allow"
+        $inheritanceType = [System.DirectoryServices.ActiveDirectorySecurityInheritance] "All"
+        
+        $ace = New-Object System.DirectoryServices.ActiveDirectoryAccessRule $identity,$adRights,$type,$objectGuid,$inheritanceType
+        $acl.AddAccessRule($ace)
+        Set-ACL -AclObject $acl "AD:DC=issp,DC=local"

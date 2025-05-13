@@ -1,0 +1,24 @@
+---
+domain_admin_password: MyAdminPassword123!
+domain_name: issp.local
+
+high_groups:
+  - Office Admin
+  - IT Admin
+  - Executive
+mid_groups:
+  - Senior management
+  - Project management
+normal_groups:
+  - Marketing
+  - Sales
+  - Accounting
+
+service_accounts:
+  mssql_svc:
+    spn: mssqlserver
+    password: WeakPassword123!
+  http_svc:
+    spn: httpserver
+  exchange_svc:
+    spn: exserver
