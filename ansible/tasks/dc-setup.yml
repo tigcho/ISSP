@@ -19,4 +19,5 @@
 
     - name: reboot after installation
       win_reboot:
+        reboot_timeout: 3700
       when: ad_setup.changed

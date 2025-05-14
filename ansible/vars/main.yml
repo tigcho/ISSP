@@ -2,17 +2,21 @@
 domain_admin_password: MyAdminPassword123!
 domain_name: issp.local
 
+asrep_users:
+  - "Harald"
+  - "Klaus"
+
 high_groups:
-  - Office Admin
-  - IT Admin
-  - Executive
+  - "Office Admin"
+  - "IT Admin"
+  - "Executive"
 mid_groups:
-  - Senior management
-  - Project management
+  - "Senior Management"
+  - "Project Management"
 normal_groups:
-  - Marketing
-  - Sales
-  - Accounting
+  - "Marketing"
+  - "Sales"
+  - "Accounting"
 
 service_accounts:
   mssql_svc:

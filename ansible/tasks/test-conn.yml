@@ -1,6 +1,8 @@
 ---
 - name: test connectivity
   hosts: windows
+  
+  tasks:  
     - name: get hostname
       win_command: hostname
       register: hostname_result
@@ -13,6 +15,6 @@
       win_shell: systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
       register: sysinfo
 
-    -name: display system info
+    - name: display system info
       debug:
         msg: "{{ sysinfo.stdout_lines }}"
