@@ -1,0 +1,18 @@
+---
+- name: join the domain
+  hosts: client
+  vars_files:
+    - ../../vars/main.yml
+
+  microsoft.ad.membership:
+    dns_domain:name: "{{ domain_name }}"
+    domain_admin_user: Administrator@issp.local
+    domain_admin_password: "{{ domain_admin_password }}"
+    state: domain
+  register: domain_join
+
+- name: reboot if required
+  win_reboot:
+    reboot_timeout: 3700
+  when: domain_join.reboot_required
+    

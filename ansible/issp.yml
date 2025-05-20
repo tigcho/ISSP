@@ -1,0 +1,6 @@
+---
+- name: configure domain controller
+  import_playbook: roles/dc/jet.yml
+
+- name: configure workstation
+  import_playbook: roles/workstation/spike.yml
