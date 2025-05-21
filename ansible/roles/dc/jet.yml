@@ -15,7 +15,7 @@
       register: adds_install
 
     - name: configure ad
-      win_domain:
+      microsoft.ad.domain:
         dns_domain_name: "{{ domain_name }}"
         safe_mode_password: "{{ domain_admin_password }}"
       register: ad_setup
@@ -24,11 +24,11 @@
     - name: reboot after installation
       win_reboot:
         reboot_timeout: 3700
-        when: ad_setup.changed 
+      when: ad_setup.changed 
 
     - name: weaken domain password policy
       win_shell: |
-        Set-ADDefaultDomainPasswordPolicy -Identity {{ domain_name }} -ComplexityEnabled $false -MinPasswordLength 4 -PasswordHistoryCount 1 -LockoutDuration (New-TimeSpan -Minutes 0) -LockoutObservationWindow (New-TimeSpan -Minutes 1)
+        Set-ADDefaultDomainPasswordPolicy -Identity {{ domain_name }} -ComplexityEnabled $false -MinPasswordLength 4 -PasswordHistoryCount 1 
 
     - name: create groups (high privilege)
       microsoft.ad.group:
@@ -68,13 +68,13 @@
 
     - name: disable kerberos preauth
       win_shell: |
-        Add-ADGroupMember -Identity {{ item }} -DoesNotRequirePreAuth $true
+        Set-ADAccountControl -Identity {{ item }} -DoesNotRequirePreAuth $true
       loop: "{{ asrep_users }}"
 
     - name: add users to dns admins group
       win_shell: |
-        Add-ADGroupMember -Identity "DnsAdmins" -Members {{ mid_groups[0] }}
-
+        Add-ADGroupMember -Identity "DnsAdmins" -Members "Senior Management"
+    
     - name: disable smb signing
       win_shell: |
         Set-SmbClientConfiguration -RequireSecuritySignature 0 -EnableSecuritySignature 0 -Confirm:$false -Force

@@ -3,4 +3,4 @@
   import_playbook: roles/dc/jet.yml
 
 - name: configure workstation
-  import_playbook: roles/workstation/spike.yml
+  import_playbook: roles/wks/spike.yml
