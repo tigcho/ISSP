@@ -1,0 +1,12 @@
+cpus              = 2
+memory            = 4096
+disk_size         = 40960
+winrm_username    = "Administrator"
+winrm_password    = "MyAdminPassword123!"
+vm_name           = "jet"
+headless          = false
+output_directory  = "/home/selin/.packer/output"
+static_ip         = "192.168.56.10"
+gateway           = "192.168.56.1"
+netmask           = "255.255.255.0"
+dns               = "192.168.56.1"
