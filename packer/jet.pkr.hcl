@@ -15,6 +15,9 @@ source "virtualbox-iso" "jet" {
   floppy_files         = [
     "scripts/autounattend.xml",
     "scripts/setup.ps1",
+    "scripts/win-update.ps1",
+    "scripts/cleanup.ps1",
+    "scripts/network-config.ps1"
   ]
   guest_os_type        = "Windows2025_64"
   iso_url              = "https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/26100.1742.240906-0331.ge_release_svc_refresh_SERVER_EVAL_x64FRE_en-us.iso"
@@ -24,6 +27,9 @@ source "virtualbox-iso" "jet" {
   winrm_username       = var.winrm_username
   winrm_password       = var.winrm_password
   winrm_port           = 5985
+  winrm_use_ssl        = false
+  winrm_insecure       = true
+  winrm_timeout        = "4h"
   vm_name              = var.vm_name
   cpus                 = var.cpus
   memory               = var.memory
@@ -31,18 +37,47 @@ source "virtualbox-iso" "jet" {
   headless             = var.headless
   output_directory     = var.output_directory
   shutdown_command     = "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\""
+
+  vboxmanage = [
+    ["modifyvm", "{{.Name}}", "--nic2", "hostonly"],
+    ["modifyvm", "{{.Name}}", "--hostonlyadapter2", "VirtualBox Host-Only Ethernet Adapter"],
+    ["modifyvm", "{{.Name}}", "--pae", "on"],
+    ["modifyvm", "{{.Name}}", "--nestedpaging", "on"],
+    ["modifyvm", "{{.Name}}", "--hwvirtex", "on"],
+    ["modifyvm", "{{.Name}}", "--vram", "16"]
+  ]
 }
 
 build {
   sources = ["source.virtualbox-iso.jet"]
+  
+  provisioner "powershell" {
+    script = "scripts/network-config.ps1"
+    pause_before = "30s"
+  }
 
-  provisioner "windows-shell" {
-    inline = [
-      <<-EOF
-      $adapter = Get-NetAdapter | Where-Object { $_.Status -eq "Up" }
-      New-NetIPAddress -InterfaceAlias $adapter.Name -IPAddress "${var.static_ip}" -PrefixLength 24 -DefaultGateway "${var.gateway}"
-      Set-DnsClientServerAddress -InterfaceAlias $adapter.Name -ServerAddresses "${var.dns}"
-      EOF
-    ]
+  provisioner "powershell" {
+    script = "scripts/win-update.ps1"
+    pause_before = "30s"
+  }
+
+  provisioner "windows-restart" {
+    restart_timeout = "30m"
+    restart_check_command = "powershell -command \"& {Write-Output 'restarted.'}\""
+  }
+
+  provisioner "powershell" {
+    script = "scripts/win-update.ps1"
+    pause_before = "30s"
+  }
+
+  provisioner "windows-restart" {
+    restart_timeout = "30m"
+    restart_check_command = "powershell -command \"& {Write-Output 'restarted.'}\""
+  }
+
+  provisioner "powershell" {
+    script = "scripts/cleanup.ps1"
+    pause_before = "30s"
   }
 }

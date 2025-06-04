@@ -1,43 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <unattend xmlns="urn:schemas-microsoft-com:unattend">
     <settings pass="windowsPE">
-        <component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+        <component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <SetupUILanguage>
                 <UILanguage>de-DE</UILanguage>
             </SetupUILanguage>
             <InputLocale>0407:00000407</InputLocale>
             <SystemLocale>de-DE</SystemLocale>
             <UILanguage>de-DE</UILanguage>
+            <UILanguageFallback>de-DE</UILanguageFallback>
             <UserLocale>de-DE</UserLocale>
         </component>
-        <component name="Microsoft-Windows-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+        <component xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Microsoft-Windows-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
             <DiskConfiguration>
                 <Disk wcm:action="add">
                     <CreatePartitions>
                         <CreatePartition wcm:action="add">
                             <Order>1</Order>
-                            <Size>500</Size>
                             <Type>Primary</Type>
+                            <Size>499</Size>
                         </CreatePartition>
                         <CreatePartition wcm:action="add">
                             <Order>2</Order>
-                            <Extend>true</Extend>
                             <Type>Primary</Type>
+                            <Extend>true</Extend>
                         </CreatePartition>
                     </CreatePartitions>
                     <ModifyPartitions>
                         <ModifyPartition wcm:action="add">
                             <Order>1</Order>
                             <PartitionID>1</PartitionID>
-                            <Format>NTFS</Format>
-                            <Label>Boot</Label>
                             <Active>true</Active>
+                            <Label>boot</Label>
+                            <Format>NTFS</Format>
                         </ModifyPartition>
                         <ModifyPartition wcm:action="add">
                             <Order>2</Order>
                             <PartitionID>2</PartitionID>
+                            <Label>Windows</Label>
                             <Format>NTFS</Format>
-                            <Label>System</Label>
                             <Letter>C</Letter>
                         </ModifyPartition>
                     </ModifyPartitions>
@@ -49,8 +50,8 @@
                 <OSImage>
                     <InstallFrom>
                         <MetaData wcm:action="add">
-                            <Key>/IMAGE/NAME</Key>
-                            <Value>Windows Server 2025 Standard Evaluation</Value>
+                            <Key>/IMAGE/INDEX </Key>
+                            <Value>1</Value>
                         </MetaData>
                     </InstallFrom>
                     <InstallTo>
@@ -60,75 +61,112 @@
                 </OSImage>
             </ImageInstall>
             <UserData>
+                <ProductKey>
+                    <WillShowUI>OnError</WillShowUI>
+                </ProductKey>
                 <AcceptEula>true</AcceptEula>
-                <FullName>Administrator</FullName>
-                <Organization>VirtualBox</Organization>
+                <Organization>ISSP</Organization>
             </UserData>
         </component>
     </settings>
     <settings pass="specialize">
-        <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
-            <ComputerName>WIN-SERVER</ComputerName>
-        </component>
-        <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+        <component xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
             <InputLocale>0407:00000407</InputLocale>
             <SystemLocale>de-DE</SystemLocale>
             <UILanguage>de-DE</UILanguage>
+            <UILanguageFallback>de-DE</UILanguageFallback>
             <UserLocale>de-DE</UserLocale>
+        </component>
+        <component xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+            <ComputerName>JET-DC</ComputerName>
+            <TimeZone>W. Europe Standard Time</TimeZone>
+        </component>
+        <component xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Microsoft-Windows-ServerManager-SvrMgrNc" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+            <DoNotOpenServerManagerAtLogon>true</DoNotOpenServerManagerAtLogon>
+        </component>
+        <component xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Microsoft-Windows-IE-ESC" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+            <IEHardenAdmin>false</IEHardenAdmin>
+            <IEHardenUser>true</IEHardenUser>
+        </component>
+        <component xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Microsoft-Windows-OutOfBoxExperience" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+            <DoNotOpenInitialConfigurationTasksAtLogon>true</DoNotOpenInitialConfigurationTasksAtLogon>
+        </component>
+        <component xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Microsoft-Windows-Security-SPP-UX" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+            <SkipAutoActivation>true</SkipAutoActivation>
         </component>
     </settings>
     <settings pass="oobeSystem">
-        <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
-            <TimeZone>W. Europe Standard Time</TimeZone>
+        <component xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
             <AutoLogon>
-                <Enabled>true</Enabled>
-                <Username>Administrator</Username>
                 <Password>
                     <Value>MyAdminPassword123!</Value>
                     <PlainText>true</PlainText>
                 </Password>
-                <LogonCount>5</LogonCount>
+                <Enabled>true</Enabled>
+                <Username>Administrator</Username>
             </AutoLogon>
+            <FirstLogonCommands>
+                <SynchronousCommand wcm:action="add">
+                    <CommandLine>%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe -Command Enable-PSRemoting -SkipNetworkProfileCheck -Force</CommandLine>
+                    <Description>Enable WinRM</Description>
+                    <Order>1</Order>
+                    <RequiresUserInput>true</RequiresUserInput>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+                    <CommandLine>%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe -Command Set-Item WSMan:\localhost\Service\Auth\Basic -Value $true</CommandLine>
+                    <Description>Enable Basic authentication</Description>
+                    <Order>2</Order>
+                    <RequiresUserInput>true</RequiresUserInput>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+                    <CommandLine>%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe -Command New-NetFirewallRule -DisplayName 'Windows Remote Management (HTTP-In)' -Name 'Windows Remote Management (HTTP-In)' -Profile Any -LocalPort 5985 -Protocol TCP</CommandLine>
+                    <Description>Add firewall exception to TCP port 5985 for WinRM over HTTP</Description>
+                    <Order>3</Order>
+                    <RequiresUserInput>true</RequiresUserInput>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+                    <CommandLine>%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe -Command "$adapter = Get-NetAdapter | Where-Object { $_.Status -eq 'Up' } | Select-Object -First 1; Remove-NetIPAddress -InterfaceAlias $adapter.Name -Confirm:$false -ErrorAction SilentlyContinue; Remove-NetRoute -InterfaceAlias $adapter.Name -Confirm:$false -ErrorAction SilentlyContinue; New-NetIPAddress -InterfaceAlias $adapter.Name -IPAddress '192.168.56.10' -PrefixLength 24 -DefaultGateway '192.168.56.1' -ErrorAction SilentlyContinue; Set-DnsClientServerAddress -InterfaceAlias $adapter.Name -ServerAddresses '192.168.56.10'"</CommandLine>
+                    <Description>Configure static IP address</Description>
+                    <Order>4</Order>
+                    <RequiresUserInput>true</RequiresUserInput>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+                    <CommandLine>%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe -Command Stop-Service WinRM</CommandLine>
+                    <Description>Stop the WinRM service to allow the dism process to finish before packer executes scripts</Description>
+                    <Order>5</Order>
+                    <RequiresUserInput>true</RequiresUserInput>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+                    <CommandLine>%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File A:\setup.ps1</CommandLine>
+                    <Description>Run Custom Setup Script</Description>
+                    <Order>6</Order>
+                    <RequiresUserInput>true</RequiresUserInput>
+                </SynchronousCommand>
+            </FirstLogonCommands>
+            <OOBE>
+                <HideEULAPage>true</HideEULAPage>
+                <HideLocalAccountScreen>true</HideLocalAccountScreen>
+                <HideOEMRegistrationScreen>true</HideOEMRegistrationScreen>
+                <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
+                <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
+                <NetworkLocation>Work</NetworkLocation>
+                <ProtectYourPC>1</ProtectYourPC>
+                <SkipMachineOOBE>true</SkipMachineOOBE>
+                <SkipUserOOBE>true</SkipUserOOBE>
+            </OOBE>
             <UserAccounts>
                 <AdministratorPassword>
                     <Value>MyAdminPassword123!</Value>
                     <PlainText>true</PlainText>
                 </AdministratorPassword>
             </UserAccounts>
-            <OOBE>
-                <HideEULAPage>true</HideEULAPage>
-                <NetworkLocation>Work</NetworkLocation>
-                <ProtectYourPC>1</ProtectYourPC>
-                <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
-                <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
-                <HideLocalAccountScreen>true</HideLocalAccountScreen>
-                <HideOEMRegistrationScreen>true</HideOEMRegistrationScreen>
-                <SkipMachineOOBE>true</SkipMachineOOBE>
-                <SkipUserOOBE>true</SkipUserOOBE>
-            </OOBE>
-            <FirstLogonCommands>
-                <SynchronousCommand wcm:action="add">
-                    <Order>1</Order>
-                    <CommandLine>cmd.exe /c powershell.exe -Command "Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name 'fDenyTSConnections' -Value 0"</CommandLine>
-                    <Description>Enable RDP</Description>
-                </SynchronousCommand>
-                <SynchronousCommand wcm:action="add">
-                    <Order>2</Order>
-                    <CommandLine>cmd.exe /c netsh advfirewall firewall set rule group="remote desktop" new enable=Yes</CommandLine>
-                    <Description>Enable RDP Firewall</Description>
-                </SynchronousCommand>
-                <SynchronousCommand wcm:action="add">
-                    <Order>3</Order>
-                    <CommandLine>cmd.exe /c powershell.exe -ExecutionPolicy Bypass -File A:\setup.ps1</CommandLine>
-                    <Description>Run Custom Setup Script</Description>
-                </SynchronousCommand>
-            </FirstLogonCommands>
-        </component>
-        <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
-            <InputLocale>0407:00000407</InputLocale>
-            <SystemLocale>de-DE</SystemLocale>
-            <UILanguage>de-DE</UILanguage>
-            <UserLocale>de-DE</UserLocale>
+            <RegisteredOwner/>
         </component>
     </settings>
+    <settings pass="offlineServicing">
+        <component xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Microsoft-Windows-LUA-Settings" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+            <EnableLUA>false</EnableLUA>
+        </component>
+    </settings>
+    <cpi:offlineImage xmlns:cpi="urn:schemas-microsoft-com:cpi" cpi:source=""/>
 </unattend>
