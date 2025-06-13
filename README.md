@@ -19,6 +19,7 @@ inspired by [this script](https://github.com/safebuffer/vulnerable-AD)
 
 ## How to run
 ```bash
+plugin install github.com/hashicorp/virtualbox
 cd packer/[jet-dc and spike-clt]
 packer build -force .
 cd ../ansible

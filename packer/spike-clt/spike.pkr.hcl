@@ -5,7 +5,6 @@ variable "winrm_username" {}
 variable "winrm_password" {}
 variable "vm_name" {}
 variable "headless" {}
-variable "output_directory" {}
 variable "iso_url" {}
 variable "iso_checksum" {}
 
@@ -20,7 +19,6 @@ source "virtualbox-iso" "spike" {
   memory               = var.memory
   disk_size            = var.disk_size
   headless             = var.headless
-  output_directory     = var.output_directory
   winrm_port           = 5985
   winrm_use_ssl        = false
   winrm_insecure       = true
