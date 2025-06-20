@@ -28,6 +28,11 @@ source "virtualbox-iso" "jet" {
   guest_os_type        = "Windows2025_64"
   boot_wait            = "15s"
   shutdown_command     = "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\""
+
+  vboxmanage   = [
+    ["modifyvm", "{{ .Name }}", "--nic2", "hostonly"],
+    ["modifyvm", "{{ .Name }}", "--hostonlyadapter2", "VirtualBox Host-Only Ethernet Adapter"]
+  ]
 }
 
 build {
@@ -35,6 +40,11 @@ build {
 
   provisioner "powershell" {
     scripts = ["scripts/guest-adds.ps1"]
+    pause_before = "30s"
+  }
+
+  provisioner "powershell" {
+    scripts = ["scripts/static-ip.ps1"]
     pause_before = "30s"
   }
 

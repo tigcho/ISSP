@@ -5,6 +5,7 @@ ISSP is an intentionally vulnerable Active Directory testing lab. It is designed
 ## What I use
 - [VirtualBox](https://www.virtualbox.org/)
 - [Ansible](https://www.ansible.com/)
+- [Packer](https://developer.hashicorp.com/packer)
 - [Windows Server 2025](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2025)
 - [Windows 10 Enterprise](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise)
 - [Kali Linux](https://www.kali.org/)
@@ -20,24 +21,11 @@ inspired by [this script](https://github.com/safebuffer/vulnerable-AD)
 ## How to run
 ```bash
 plugin install github.com/hashicorp/virtualbox
-cd packer/[jet-dc and spike-clt]
+cd packer/[jet-dc and spike-clt and ed-atk]
 packer build -force .
 cd ../ansible
 ansible [dc or client] -i inventory.ini -m win_ping
 ansible-playbook -i inventory.ini issp.yml
-```
-
-## Configuration
-```bash
-[DC]
-new-netipaddress -interfacealias "Ethernet 2" -ipaddress 192.168.56.10 -prefixlength 24
-set-dnsclientserveraddress -interfacealias "Ethernet 2" -serveraddresses 192.168.56.10
-
-[CLIENT]
-set-netconnectionprofile -interfacealias "Ethernet 2" -networkcategory private
-new-netipaddress -interfacealias "Ethernet 2" -ipaddress 192.168.56.101 -prefixlength 24 -defaultgateway 192.168.56.10
-set-dnsclientserveraddress -interfacealias "Ethernet 2" -serveraddresses 192.168.56.10
-netsh advfirewall firewall add rule name="Allow ICMPv4-In" protocol=icmpv4:8,any dir=in action=allow
 ```
 
 ## Other resources that helped me
