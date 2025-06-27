@@ -1,0 +1,15 @@
+---
+- name: groups 
+  hosts: dc
+  gather_facts: true
+  vars_files:
+    - ../../vars/main.yml
+
+  tasks:
+    - name: Create groups
+      microsoft.ad.group:
+        name: "{{ item.name }}"
+        scope: "{{ item.scope }}"
+        path: "{{ item.ou }}"
+        state: present
+      loop: "{{ ad_groups }}"

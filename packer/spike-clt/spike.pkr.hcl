@@ -47,9 +47,4 @@ build {
     scripts = ["../spike-clt/scripts/static-ip.ps1"]
     pause_before = "30s"
   }
-
-  provisioner "windows-restart" {
-    restart_timeout = "30m"
-    restart_check_command = "powershell -command \"& {Write-Output 'restarted.'}\""
-  }
 }

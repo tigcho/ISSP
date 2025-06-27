@@ -1,0 +1,13 @@
+---
+- name: organizational units
+  hosts: dc
+  gather_facts: true
+  vars_files:
+    - ../../vars/main.yml
+  
+  tasks:
+    - name: create base OUs
+      microsoft.ad.ou:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ ad_ous }}"

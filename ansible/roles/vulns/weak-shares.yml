@@ -1,0 +1,17 @@
+---
+- name: Vulnerability - Weak file share permissions
+  hosts: dc
+  gather_facts: false
+
+  tasks:
+    - name: ensure C:\ISSP-Share exists
+      win_file:
+        path: C:\ISSP-Share
+        state: directory
+
+    - name: create share and grant everyone full control
+      win_share:
+        name: ISSP-Share
+        path: C:\ISSP-Share
+        full: Everyone
+        state: present
